@@ -1,123 +1,166 @@
 @extends('layouts.app')
+@extends('layouts.app')
 
 @section('content')
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0">{{ __('Minhas Transações') }}</h4>
-                    <a href="{{ route('transactions.create') }}" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Nova Transação
-                    </a>
+<div class="max-w-screen-2xl mx-auto py-6 animate-slide-in-up">
+    <!-- Header com animação -->
+    <div class="card-modern animate-fade-in-scale mb-6">
+        <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+            <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-0 animate-on-scroll"><i class="fas fa-exchange-alt text-blue-500 mr-3"></i>{{ __('Minhas Transações') }}</h4>
+            <a href="{{ route('transactions.create') }}" class="btn-gradient-primary animate-glow">
+                <i class="fas fa-plus mr-2"></i> Nova Transação
+            </a>
+        </div>
+        
+        <!-- Cards de Resumo Dinâmicos -->
+        <div class="p-6">
+            @if(session('success'))
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-4 animate-slide-in-up">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        {{ session('success') }}
+                    </div>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4 animate-slide-in-up">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        {{ session('error') }}
+                    </div>
+                </div>
+            @endif
+
+            <!-- Cards de Estatísticas Financeiras -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <!-- Total Receitas -->
+                <div class="stats-card bg-gradient-to-r from-green-500 to-emerald-600 transform transition-all duration-300 hover:scale-105 animate-float">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-white/80 text-sm font-medium mb-1">Total de Receitas</h3>
+                            <p class="text-white text-2xl font-bold animate-number" data-value="{{ $totalIncome ?? 0 }}">R$ 0,00</p>
+                        </div>
+                        <div class="bg-white/20 rounded-lg p-3 animate-bounce">
+                            <i class="fas fa-arrow-up text-white text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2 flex items-center text-white/70 text-xs">
+                        <i class="fas fa-trending-up mr-1"></i>
+                        <span>Total acumulado</span>
+                    </div>
                 </div>
 
-                <div class="card-body">
-                    @if(session('success'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <!-- Total Despesas -->
+                <div class="stats-card bg-gradient-to-r from-red-500 to-pink-600 transform transition-all duration-300 hover:scale-105 animate-float" style="animation-delay: 0.2s;">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-white/80 text-sm font-medium mb-1">Total de Despesas</h3>
+                            <p class="text-white text-2xl font-bold animate-number" data-value="{{ $totalExpenses ?? 0 }}">R$ 0,00</p>
                         </div>
-                    @endif
-
-                    @if(session('error'))
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            {{ session('error') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                    @endif
-
-                    <!-- Resumo Financeiro -->
-                    <div class="row mb-4 g-3">
-                        <div class="col-lg-4 col-md-6">
-                            <div class="card bg-success text-white h-100">
-                                <div class="card-body text-center">
-                                    <i class="fas fa-arrow-up fa-2x mb-2"></i>
-                                    <h6 class="mb-1">Total de Receitas</h6>
-                                    <h4 class="mb-0">R$ {{ number_format($totalIncome ?? 0, 2, ',', '.') }}</h4>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="card bg-danger text-white h-100">
-                                <div class="card-body text-center">
-                                    <i class="fas fa-arrow-down fa-2x mb-2"></i>
-                                    <h6 class="mb-1">Total de Despesas</h6>
-                                    <h4 class="mb-0">R$ {{ number_format($totalExpenses ?? 0, 2, ',', '.') }}</h4>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-12">
-                            <div class="card bg-info text-white h-100">
-                                <div class="card-body text-center">
-                                    <i class="fas fa-chart-line fa-2x mb-2"></i>
-                                    <h6 class="mb-1">Saldo Líquido</h6>
-                                    <h4 class="mb-0">R$ {{ number_format(($totalIncome ?? 0) - ($totalExpenses ?? 0), 2, ',', '.') }}</h4>
-                                </div>
-                            </div>
+                        <div class="bg-white/20 rounded-lg p-3 animate-pulse">
+                            <i class="fas fa-arrow-down text-white text-xl"></i>
                         </div>
                     </div>
+                    <div class="mt-2 flex items-center text-white/70 text-xs">
+                        <i class="fas fa-trending-down mr-1"></i>
+                        <span>Total acumulado</span>
+                    </div>
+                </div>
 
-                    <!-- Filtros -->
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h6 class="mb-0"><i class="fas fa-filter"></i> Filtros</h6>
+                <!-- Saldo Líquido -->
+                <div class="stats-card bg-gradient-to-r from-blue-500 to-indigo-600 transform transition-all duration-300 hover:scale-105 animate-float" style="animation-delay: 0.4s;">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-white/80 text-sm font-medium mb-1">Saldo Líquido</h3>
+                            <p class="text-white text-2xl font-bold animate-number" data-value="{{ ($totalIncome ?? 0) - ($totalExpenses ?? 0) }}">R$ 0,00</p>
                         </div>
-                        <div class="card-body">
-                            <form method="GET" action="{{ route('transactions.index') }}">
-                                <div class="row g-3">
-                                    <div class="col-lg-3 col-md-6">
-                                        <label for="account_id" class="form-label">Conta</label>
-                                        <select id="account_id" name="account_id" class="form-select">
-                                            <option value="">Todas as contas</option>
-                                            @foreach($accounts as $account)
-                                                <option value="{{ $account->id }}" {{ request('account_id') == $account->id ? 'selected' : '' }}>
-                                                    {{ $account->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-3 col-md-6">
-                                        <label for="category_id" class="form-label">Categoria</label>
-                                        <select id="category_id" name="category_id" class="form-select">
-                                            <option value="">Todas as categorias</option>
-                                            @foreach($categories as $category)
-                                                <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
-                                                    {{ $category->name }} ({{ $category->type === 'income' ? 'Receita' : 'Despesa' }})
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-2 col-md-4">
-                                        <label for="type" class="form-label">Tipo</label>
-                                        <select id="type" name="type" class="form-select">
-                                            <option value="">Todos</option>
-                                            <option value="income" {{ request('type') == 'income' ? 'selected' : '' }}>Receita</option>
-                                            <option value="expense" {{ request('type') == 'expense' ? 'selected' : '' }}>Despesa</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-2 col-md-4">
-                                        <label for="start_date" class="form-label">Data Inicial</label>
-                                        <input type="date" id="start_date" name="start_date" class="form-control" value="{{ request('start_date') }}">
-                                    </div>
-                                    <div class="col-lg-2 col-md-4">
-                                        <label for="end_date" class="form-label">Data Final</label>
-                                        <input type="date" id="end_date" name="end_date" class="form-control" value="{{ request('end_date') }}">
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-12">
-                                        <button type="submit" class="btn btn-primary me-2">
-                                            <i class="fas fa-search"></i> Filtrar
-                                        </button>
-                                        <a href="{{ route('transactions.index') }}" class="btn btn-secondary">
-                                            <i class="fas fa-times"></i> Limpar
-                                        </a>
-                                    </div>
-                                </div>
-                            </form>
+                        <div class="bg-white/20 rounded-lg p-3 animate-bounce">
+                            <i class="fas fa-chart-line text-white text-xl"></i>
                         </div>
                     </div>
+                    <div class="mt-2 flex items-center text-white/70 text-xs">
+                        <i class="fas fa-balance-scale mr-1"></i>
+                        <span>Receitas - Despesas</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filtros Modernos -->
+            <div class="card-modern mb-6">
+                <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+                    <h6 class="text-lg font-semibold text-gray-900 dark:text-white mb-0 flex items-center">
+                        <i class="fas fa-filter text-purple-500 mr-3"></i> Filtros Avançados
+                    </h6>
+                    <button type="button" class="btn-gradient-primary text-sm px-4 py-2" onclick="toggleFilters()">
+                        <i class="fas fa-chevron-down" id="filter-icon"></i>
+                    </button>
+                </div>
+                <div class="p-6" id="filters-container" style="display: none;">
+                    <form method="GET" action="{{ route('transactions.index') }}" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="form-group">
+                                <label for="account_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <i class="fas fa-wallet mr-2"></i>Conta
+                                </label>
+                                <select id="account_id" name="account_id" class="form-control w-full">
+                                    <option value="">Todas as contas</option>
+                                    @foreach($accounts as $account)
+                                        <option value="{{ $account->id }}" {{ request('account_id') == $account->id ? 'selected' : '' }}>
+                                            {{ $account->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="category_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <i class="fas fa-tags mr-2"></i>Categoria
+                                </label>
+                                <select id="category_id" name="category_id" class="form-control w-full">
+                                    <option value="">Todas as categorias</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }} ({{ $category->type === 'income' ? 'Receita' : 'Despesa' }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <i class="fas fa-exchange-alt mr-2"></i>Tipo
+                                </label>
+                                <select id="type" name="type" class="form-control w-full">
+                                    <option value="">Todos</option>
+                                    <option value="income" {{ request('type') == 'income' ? 'selected' : '' }}>Receita</option>
+                                    <option value="expense" {{ request('type') == 'expense' ? 'selected' : '' }}>Despesa</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label for="start_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <i class="fas fa-calendar-alt mr-2"></i>Data Inicial
+                                </label>
+                                <input type="date" id="start_date" name="start_date" class="form-control w-full" value="{{ request('start_date') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="end_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <i class="fas fa-calendar-alt mr-2"></i>Data Final
+                                </label>
+                                <input type="date" id="end_date" name="end_date" class="form-control w-full" value="{{ request('end_date') }}">
+                            </div>
+                        </div>
+                        <div class="flex gap-3 pt-4">
+                            <button type="submit" class="btn-gradient-primary">
+                                <i class="fas fa-search mr-2"></i> Filtrar
+                            </button>
+                            <a href="{{ route('transactions.index') }}" class="btn-gradient-secondary">
+                                <i class="fas fa-times mr-2"></i> Limpar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
                     <!-- Lista de Transações -->
                     @if($transactions->count() > 0)
@@ -355,4 +398,171 @@
 
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+<script>
+// Animação de números para os cards de estatísticas
+function animateValue(element, start, end, duration) {
+    const range = end - start;
+    const increment = range / (duration / 16);
+    let current = start;
+    const timer = setInterval(() => {
+        current += increment;
+        if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+            current = end;
+            clearInterval(timer);
+        }
+        element.textContent = 'R$ ' + current.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    }, 16);
+}
+
+// Aplicar tema escuro dinamicamente se necessário
+function applyDarkThemeToElements() {
+    if (document.body.getAttribute('data-theme') === 'dark') {
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                    if (node.nodeType === 1) {
+                        if (node.classList.contains('badge') || node.classList.contains('alert')) {
+                            node.style.filter = 'brightness(0.9)';
+                        }
+                    }
+                });
+            });
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar animações de números
+    document.querySelectorAll('.animate-number').forEach(el => {
+        const finalValue = parseFloat(el.dataset.value);
+        setTimeout(() => {
+            animateValue(el, 0, finalValue, 2000);
+        }, 500);
+    });
+    
+    // Aplicar tema escuro a elementos dinâmicos
+    applyDarkThemeToElements();
+    
+    // Adicionar efeitos de hover nas linhas da tabela
+    const tableRows = document.querySelectorAll('tbody tr');
+    tableRows.forEach(row => {
+        row.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.01)';
+            this.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+            this.style.transition = 'all 0.3s ease';
+        });
+        
+        row.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+            this.style.boxShadow = 'none';
+        });
+    });
+    
+    // Animação de entrada para elementos com scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('in-view');
+            }
+        });
+    }, observerOptions);
+    
+    document.querySelectorAll('.animate-on-scroll').forEach(el => {
+        observer.observe(el);
+    });
+    
+    // Função para toggle dos filtros
+    window.toggleFilters = function() {
+        const container = document.getElementById('filters-container');
+        const icon = document.getElementById('filter-icon');
+        
+        if (container.style.display === 'none') {
+            container.style.display = 'block';
+            container.classList.add('animate-slide-in-up');
+            icon.classList.remove('fa-chevron-down');
+            icon.classList.add('fa-chevron-up');
+        } else {
+            container.style.display = 'none';
+            icon.classList.remove('fa-chevron-up');
+            icon.classList.add('fa-chevron-down');
+        }
+    };
+    
+    // Animação dos números nos cards
+    function animateValue(element, start, end, duration) {
+        const range = end - start;
+        const increment = range / (duration / 16);
+        let current = start;
+        const timer = setInterval(() => {
+            current += increment;
+            if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                current = end;
+                clearInterval(timer);
+            }
+            element.textContent = 'R$ ' + current.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }, 16);
+    }
+    
+    // Inicializar animações dos números
+    document.querySelectorAll('.animate-number').forEach(el => {
+        const finalValue = parseFloat(el.dataset.value) || 0;
+        animateValue(el, 0, finalValue, 2000);
+    });
+    
+    // Melhorar interação dos cards
+    const statsCards = document.querySelectorAll('.stats-card');
+    statsCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-12px) scale(1.03)';
+            this.style.boxShadow = '0 25px 50px rgba(0, 0, 0, 0.2)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+            this.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+        });
+    });
+    
+    // Efeito de typing no título
+    const title = document.querySelector('h4.animate-on-scroll');
+    if (title) {
+        const text = title.textContent;
+        title.textContent = '';
+        title.style.borderRight = '2px solid #6366F1';
+        
+        let i = 0;
+        const typeWriter = () => {
+            if (i < text.length) {
+                title.textContent += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 50);
+            } else {
+                setTimeout(() => {
+                    title.style.borderRight = 'none';
+                }, 500);
+            }
+        };
+        
+        setTimeout(typeWriter, 200);
+    }
+    
+    // Adicionar efeito de shimmer nos badges
+    const badges = document.querySelectorAll('.badge');
+    badges.forEach(badge => {
+        badge.addEventListener('mouseenter', function() {
+            this.classList.add('animate-shimmer');
+        });
+        
+        badge.addEventListener('mouseleave', function() {
+            this.classList.remove('animate-shimmer');
+        });
+    });
+});
+</script>
 @endpush

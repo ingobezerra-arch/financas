@@ -27,7 +27,7 @@
                 @if($comparison)
                 <div class="card mb-4">
                     <div class="card-header bg-info text-white">
-                        <h5 class="mb-0"><i class="fas fa-balance-scale"></i> Comparação de Estratégias</h5>
+                        <h5 class="mb-0"><i class="fas fa-balance-scale mr-2"></i> Comparação de Estratégias</h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -257,7 +257,7 @@
                 <!-- Card com Explicações -->
                 <div class="card mt-4">
                     <div class="card-header bg-light">
-                        <h6 class="mb-0"><i class="fas fa-info-circle"></i> Como Funcionam as Estratégias</h6>
+                        <h6 class="mb-0"><i class="fas fa-info-circle mr-2"></i> Como Funcionam as Estratégias</h6>
                     </div>
                     <div class="card-body">
                         <div class="row">

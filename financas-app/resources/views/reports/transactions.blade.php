@@ -25,7 +25,7 @@
             <!-- Filtros -->
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="fas fa-filter"></i> Filtros</h5>
+                    <h5 class="mb-0"><i class="fas fa-filter mr-2"></i> Filtros</h5>
                 </div>
                 <div class="card-body">
                     <form method="GET" action="{{ route('reports.transactions') }}">

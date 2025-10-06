@@ -1,6 +1,7 @@
 import './bootstrap';
 import 'bootstrap';
 import './theme-utils';
+import './sidebar';
 
 import Alpine from 'alpinejs';
 

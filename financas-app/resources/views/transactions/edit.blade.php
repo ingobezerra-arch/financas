@@ -6,29 +6,76 @@
         <div class="col-md-10">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0"><i class="fas fa-plus-circle text-green-500 mr-3"></i>{{ __('Nova Transação') }}</h4>
-                    <a href="{{ route('transactions.index') }}" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left mr-2"></i> Voltar
-                    </a>
+                    <h4 class="mb-0"><i class="fas fa-edit text-blue-500 mr-3"></i>{{ __('Editar Transação') }}</h4>
+                    <div class="d-flex gap-2">
+                        <a href="{{ route('transactions.show', $transaction) }}" class="btn btn-outline-info">
+                            <i class="fas fa-eye mr-2"></i> Visualizar
+                        </a>
+                        <a href="{{ route('transactions.index') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left mr-2"></i> Voltar
+                        </a>
+                    </div>
                 </div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('transactions.store') }}">
+                    @if($errors->any())
+                        <div class="alert alert-danger">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-exclamation-circle mr-2"></i>
+                                <strong>Erro na validação:</strong>
+                            </div>
+                            <ul class="mb-0">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <!-- Informações da Transação Atual -->
+                    <div class="alert alert-info">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <div class="transaction-icon {{ $transaction->type === 'income' ? 'bg-success' : 'bg-danger' }}">
+                                        <i class="fas {{ $transaction->type === 'income' ? 'fa-arrow-up' : 'fa-arrow-down' }} text-white"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">{{ $transaction->description }}</h6>
+                                    <small class="text-muted">
+                                        {{ $transaction->account->name }} • 
+                                        {{ $transaction->category->name }} • 
+                                        {{ $transaction->transaction_date->format('d/m/Y') }}
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <h5 class="mb-0 {{ $transaction->type === 'income' ? 'text-success' : 'text-danger' }}">
+                                    {{ $transaction->type === 'income' ? '+' : '-' }}{{ $transaction->formatted_amount }}
+                                </h5>
+                                <small class="text-muted">{{ $transaction->type === 'income' ? 'Receita' : 'Despesa' }}</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form method="POST" action="{{ route('transactions.update', $transaction) }}">
                         @csrf
+                        @method('PUT')
 
                         <div class="row">
                             <!-- Tipo de Transação -->
                             <div class="col-md-12 mb-3">
                                 <label class="form-label">{{ __('Tipo de Transação') }} <span class="text-danger">*</span></label>
                                 <div class="btn-group w-100" role="group">
-                                    <input type="radio" class="btn-check" name="type" id="type_income" value="income" {{ old('type') == 'income' ? 'checked' : '' }} required>
+                                    <input type="radio" class="btn-check" name="type" id="type_income" value="income" {{ old('type', $transaction->type) == 'income' ? 'checked' : '' }} required>
                                     <label class="btn btn-outline-success" for="type_income">
-                                        <i class="fas fa-arrow-up"></i> Receita
+                                        <i class="fas fa-arrow-up mr-2"></i> Receita
                                     </label>
 
-                                    <input type="radio" class="btn-check" name="type" id="type_expense" value="expense" {{ old('type') == 'expense' ? 'checked' : '' }} required>
+                                    <input type="radio" class="btn-check" name="type" id="type_expense" value="expense" {{ old('type', $transaction->type) == 'expense' ? 'checked' : '' }} required>
                                     <label class="btn btn-outline-danger" for="type_expense">
-                                        <i class="fas fa-arrow-down"></i> Despesa
+                                        <i class="fas fa-arrow-down mr-2"></i> Despesa
                                     </label>
                                 </div>
                                 @error('type')
@@ -46,7 +93,7 @@
                                         <span class="input-group-text">R$</span>
                                         <input id="amount" type="number" step="0.01" min="0.01" 
                                                class="form-control @error('amount') is-invalid @enderror" 
-                                               name="amount" value="{{ old('amount') }}" required autofocus>
+                                               name="amount" value="{{ old('amount', $transaction->amount) }}" required autofocus>
                                         @error('amount')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -62,7 +109,7 @@
                                     <label for="transaction_date" class="form-label">{{ __('Data') }} <span class="text-danger">*</span></label>
                                     <input id="transaction_date" type="date" 
                                            class="form-control @error('transaction_date') is-invalid @enderror" 
-                                           name="transaction_date" value="{{ old('transaction_date', date('Y-m-d')) }}" required>
+                                           name="transaction_date" value="{{ old('transaction_date', $transaction->transaction_date->format('Y-m-d')) }}" required>
                                     @error('transaction_date')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -78,7 +125,7 @@
                                     <select id="account_id" class="form-select @error('account_id') is-invalid @enderror" name="account_id" required>
                                         <option value="">Selecione uma conta</option>
                                         @foreach($accounts as $account)
-                                            <option value="{{ $account->id }}" {{ old('account_id') == $account->id ? 'selected' : '' }}
+                                            <option value="{{ $account->id }}" {{ old('account_id', $transaction->account_id) == $account->id ? 'selected' : '' }}
                                                     data-color="{{ $account->color }}" data-icon="{{ $account->icon }}">
                                                 {{ $account->name }} ({{ $account->formatted_balance }})
                                             </option>
@@ -100,7 +147,7 @@
                                     <label for="description" class="form-label">{{ __('Descrição') }} <span class="text-danger">*</span></label>
                                     <input id="description" type="text" 
                                            class="form-control @error('description') is-invalid @enderror" 
-                                           name="description" value="{{ old('description') }}" required
+                                           name="description" value="{{ old('description', $transaction->description) }}" required
                                            placeholder="Ex: Compra no supermercado, Salário mensal">
                                     @error('description')
                                         <span class="invalid-feedback" role="alert">
@@ -117,7 +164,7 @@
                                     <select id="category_id" class="form-select @error('category_id') is-invalid @enderror" name="category_id" required>
                                         <option value="">Selecione uma categoria</option>
                                         @foreach($categories as $category)
-                                            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}
+                                            <option value="{{ $category->id }}" {{ old('category_id', $transaction->category_id) == $category->id ? 'selected' : '' }}
                                                     data-type="{{ $category->type }}" data-color="{{ $category->color }}" data-icon="{{ $category->icon }}">
                                                 {{ $category->name }}
                                             </option>
@@ -139,7 +186,7 @@
                                     <label for="notes" class="form-label">{{ __('Observações') }}</label>
                                     <textarea id="notes" class="form-control @error('notes') is-invalid @enderror" 
                                               name="notes" rows="3" 
-                                              placeholder="Observações adicionais sobre a transação">{{ old('notes') }}</textarea>
+                                              placeholder="Observações adicionais sobre a transação">{{ old('notes', $transaction->notes) }}</textarea>
                                     @error('notes')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -155,7 +202,7 @@
                                     <input id="tags_input" type="text" class="form-control" 
                                            placeholder="Ex: mercado, combustível">
                                     <small class="form-text text-muted">Pressione Enter para adicionar tags</small>
-                                    <input type="hidden" name="tags" id="tags_hidden" value="{{ json_encode(old('tags', [])) }}">
+                                    <input type="hidden" name="tags" id="tags_hidden" value="{{ json_encode(old('tags', $transaction->tags ?? [])) }}">
                                     <div id="tags_container" class="mt-2"></div>
                                 </div>
                             </div>
@@ -168,7 +215,7 @@
                                     <label for="receipt_url" class="form-label">{{ __('URL do Comprovante') }}</label>
                                     <input id="receipt_url" type="url" 
                                            class="form-control @error('receipt_url') is-invalid @enderror" 
-                                           name="receipt_url" value="{{ old('receipt_url') }}"
+                                           name="receipt_url" value="{{ old('receipt_url', $transaction->receipt_url) }}"
                                            placeholder="https://exemplo.com/comprovante.jpg">
                                     @error('receipt_url')
                                         <span class="invalid-feedback" role="alert">
@@ -176,6 +223,22 @@
                                         </span>
                                     @enderror
                                     <small class="form-text text-muted">Link para foto ou arquivo do comprovante</small>
+                                </div>
+                            </div>
+                            <!-- Status -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="status" class="form-label">{{ __('Status') }}</label>
+                                    <select id="status" class="form-select @error('status') is-invalid @enderror" name="status">
+                                        <option value="completed" {{ old('status', $transaction->status) == 'completed' ? 'selected' : '' }}>Concluída</option>
+                                        <option value="pending" {{ old('status', $transaction->status) == 'pending' ? 'selected' : '' }}>Pendente</option>
+                                        <option value="cancelled" {{ old('status', $transaction->status) == 'cancelled' ? 'selected' : '' }}>Cancelada</option>
+                                    </select>
+                                    @error('status')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -211,11 +274,21 @@
                         </div>
 
                         <div class="d-flex justify-content-between">
-                            <a href="{{ route('transactions.index') }}" class="btn btn-secondary">
-                                <i class="fas fa-times mr-2"></i> Cancelar
-                            </a>
+                            <div class="d-flex gap-2">
+                                <a href="{{ route('transactions.show', $transaction) }}" class="btn btn-secondary">
+                                    <i class="fas fa-times mr-2"></i> Cancelar
+                                </a>
+                                <form action="{{ route('transactions.destroy', $transaction) }}" method="POST" class="d-inline" 
+                                      onsubmit="return confirm('Tem certeza que deseja excluir esta transação? Esta ação não pode ser desfeita.')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">
+                                        <i class="fas fa-trash mr-2"></i> Excluir
+                                    </button>
+                                </form>
+                            </div>
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save mr-2"></i> Salvar Transação
+                                <i class="fas fa-save mr-2"></i> Salvar Alterações
                             </button>
                         </div>
                     </form>

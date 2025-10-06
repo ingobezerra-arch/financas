@@ -240,7 +240,7 @@
                     <!-- Registrar Pagamento -->
                     <div class="card mb-4">
                         <div class="card-header bg-primary text-white">
-                            <h6 class="mb-0"><i class="fas fa-money-bill-wave"></i> Registrar Pagamento</h6>
+                            <h6 class="mb-0"><i class="fas fa-money-bill-wave mr-2"></i> Registrar Pagamento</h6>
                         </div>
                         <div class="card-body">
                             <form action="{{ route('debts.record-payment', $debt) }}" method="POST">
@@ -273,7 +273,7 @@
                     <!-- Resumo Mensal -->
                     <div class="card mb-4">
                         <div class="card-header">
-                            <h6 class="mb-0"><i class="fas fa-chart-line"></i> Resumo Mensal</h6>
+                            <h6 class="mb-0"><i class="fas fa-chart-line mr-2"></i> Resumo Mensal</h6>
                         </div>
                         <div class="card-body">
                             <div class="row text-center">
@@ -297,7 +297,7 @@
                     @if($debt->paymentSchedules->count() > 0)
                     <div class="card">
                         <div class="card-header">
-                            <h6 class="mb-0"><i class="fas fa-history"></i> Últimos Pagamentos</h6>
+                            <h6 class="mb-0"><i class="fas fa-history mr-2"></i> Últimos Pagamentos</h6>
                         </div>
                         <div class="card-body">
                             @foreach($debt->paymentSchedules->take(5) as $schedule)
@@ -330,7 +330,7 @@
                     @if($debt->paymentPlans->count() > 0)
                     <div class="card mt-4">
                         <div class="card-header">
-                            <h6 class="mb-0"><i class="fas fa-calendar-alt"></i> Planos de Pagamento</h6>
+                            <h6 class="mb-0"><i class="fas fa-calendar-alt mr-2"></i> Planos de Pagamento</h6>
                         </div>
                         <div class="card-body">
                             @foreach($debt->paymentPlans as $plan)

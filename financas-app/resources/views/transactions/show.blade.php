@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@extends('layouts.app')
 
 @section('content')
 <div class="container">
@@ -6,13 +7,13 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0">{{ __('Detalhes da Transação') }}</h4>
+                    <h4 class="mb-0"><i class="fas fa-file-invoice-dollar text-blue-500 mr-3"></i>{{ __('Detalhes da Transação') }}</h4>
                     <div class="d-flex gap-2">
                         <a href="{{ route('transactions.edit', $transaction) }}" class="btn btn-outline-primary">
-                            <i class="fas fa-edit"></i> Editar
+                            <i class="fas fa-edit mr-2"></i> Editar
                         </a>
                         <a href="{{ route('transactions.index') }}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i> Voltar
+                            <i class="fas fa-arrow-left mr-2"></i> Voltar
                         </a>
                     </div>
                 </div>
@@ -147,12 +148,12 @@
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">
-                                <i class="fas fa-trash"></i> Excluir Transação
+                                <i class="fas fa-trash mr-2"></i> Excluir Transação
                             </button>
                         </form>
                         
                         <a href="{{ route('transactions.edit', $transaction) }}" class="btn btn-primary">
-                            <i class="fas fa-edit"></i> Editar Transação
+                            <i class="fas fa-edit mr-2"></i> Editar Transação
                         </a>
                     </div>
                 </div>

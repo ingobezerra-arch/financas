@@ -32,6 +32,11 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
+// Rota temporária para teste
+Route::get('/test-alpine', function() {
+    return view('test-alpine');
+})->middleware('auth')->name('test.alpine');
+
 Route::middleware('auth')->group(function () {
     // Profile routes (from Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

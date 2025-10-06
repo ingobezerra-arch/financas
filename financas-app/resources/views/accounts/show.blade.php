@@ -21,7 +21,7 @@
                             <i class="fas fa-edit"></i> Editar
                         </a>
                         <a href="{{ route('accounts.index') }}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i> Voltar
+                            <i class="fas fa-arrow-left mr-2"></i> Voltar
                         </a>
                     </div>
                 </div>
@@ -119,7 +119,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Transações Recentes</h5>
                     <a href="#" class="btn btn-outline-primary btn-sm">
-                        <i class="fas fa-plus"></i> Nova Transação
+                        <i class="fas fa-plus mr-2"></i> Nova Transação
                     </a>
                 </div>
 
@@ -190,7 +190,7 @@
                                                             <i class="fas fa-eye"></i> Ver
                                                         </a></li>
                                                         <li><a class="dropdown-item" href="#">
-                                                            <i class="fas fa-edit"></i> Editar
+                                                            <i class="fas fa-edit mr-2"></i> Editar
                                                         </a></li>
                                                         <li><hr class="dropdown-divider"></li>
                                                         <li><a class="dropdown-item text-danger" href="#">

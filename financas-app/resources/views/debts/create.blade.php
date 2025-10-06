@@ -183,7 +183,7 @@
             <!-- Card com Dicas -->
             <div class="card mt-4">
                 <div class="card-header bg-info text-white">
-                    <h6 class="mb-0"><i class="fas fa-lightbulb"></i> Dicas Importantes</h6>
+                    <h6 class="mb-0"><i class="fas fa-lightbulb mr-2"></i> Dicas Importantes</h6>
                 </div>
                 <div class="card-body">
                     <ul class="mb-0">

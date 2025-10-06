@@ -66,7 +66,7 @@
             <!-- Progresso Geral -->
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="fas fa-chart-line"></i> Progresso Geral das Metas</h5>
+                    <h5 class="mb-0"><i class="fas fa-chart-line mr-2"></i> Progresso Geral das Metas</h5>
                 </div>
                 <div class="card-body">
                     @if($goalsSummary['total_target'] > 0)
@@ -110,7 +110,7 @@
             <!-- Lista Detalhada de Metas -->
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="fas fa-list"></i> Todas as Metas</h5>
+                    <h5 class="mb-0"><i class="fas fa-list mr-2"></i> Todas as Metas</h5>
                 </div>
                 <div class="card-body">
                     @if($goals->count() > 0)

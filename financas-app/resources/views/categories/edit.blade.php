@@ -183,7 +183,7 @@
                         <!-- Informações Adicionais -->
                         @if($category->transactions()->count() > 0 || $category->budgets()->count() > 0)
                             <div class="alert alert-info">
-                                <h6><i class="fas fa-info-circle"></i> Informações da Categoria</h6>
+                                <h6><i class="fas fa-info-circle mr-2"></i> Informações da Categoria</h6>
                                 <ul class="mb-0">
                                     @if($category->transactions()->count() > 0)
                                         <li>{{ $category->transactions()->count() }} transação(ões) associada(s)</li>

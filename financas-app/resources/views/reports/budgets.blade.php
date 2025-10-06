@@ -67,7 +67,7 @@
             <!-- Progresso Geral -->
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="fas fa-chart-bar"></i> Progresso Geral dos Orçamentos</h5>
+                    <h5 class="mb-0"><i class="fas fa-chart-bar mr-2"></i> Progresso Geral dos Orçamentos</h5>
                 </div>
                 <div class="card-body">
                     @if($budgetSummary['total_budgeted'] > 0)
@@ -110,7 +110,7 @@
             <!-- Lista Detalhada de Orçamentos -->
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="fas fa-list"></i> Orçamentos Ativos</h5>
+                    <h5 class="mb-0"><i class="fas fa-list mr-2"></i> Orçamentos Ativos</h5>
                 </div>
                 <div class="card-body">
                     @if($budgets->count() > 0)

@@ -10,7 +10,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="mb-0">{{ __('Editar Conta: ') . $account->name }}</h4>
                     <a href="{{ route('accounts.index') }}" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i> Voltar
+                        <i class="fas fa-arrow-left mr-2"></i> Voltar
                     </a>
                 </div>
 
@@ -165,10 +165,10 @@
 
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('accounts.index') }}" class="btn btn-secondary">
-                                <i class="fas fa-times"></i> Cancelar
+                                <i class="fas fa-times mr-2"></i> Cancelar
                             </a>
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i> Salvar Alterações
+                                <i class="fas fa-save mr-2"></i> Salvar Alterações
                             </button>
                         </div>
                     </form>
