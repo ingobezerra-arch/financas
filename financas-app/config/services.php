@@ -3,6 +3,22 @@
 return [
     /*
     |--------------------------------------------------------------------------
+    | PagSeguro Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for PagSeguro payment gateway integration
+    |
+    */
+    'pagseguro' => [
+        'email' => env('PAGSEGURO_EMAIL'),
+        'token' => env('PAGSEGURO_TOKEN'),
+        'sandbox' => env('PAGSEGURO_SANDBOX', true),
+        'notification_url' => env('PAGSEGURO_NOTIFICATION_URL'),
+        'redirect_url' => env('PAGSEGURO_REDIRECT_URL'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Open Finance Configuration
     |--------------------------------------------------------------------------
     |

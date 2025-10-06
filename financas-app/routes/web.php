@@ -13,6 +13,7 @@ use App\Http\Controllers\BankIntegrationController;
 use App\Http\Controllers\DebtController;
 use App\Http\Controllers\PaymentPlanController;
 use App\Http\Controllers\PaymentScheduleController;
+use App\Http\Controllers\CheckoutController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,7 +29,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
+
+// Checkout routes (public)
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+Route::get('/payment/success', [CheckoutController::class, 'success'])->name('payment.success');
+Route::get('/payment/pending', [CheckoutController::class, 'pending'])->name('payment.pending');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
