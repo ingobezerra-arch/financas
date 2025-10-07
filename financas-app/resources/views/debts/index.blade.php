@@ -212,23 +212,35 @@
                             <div class="flex items-center space-x-2">
                                 @switch($debt->debt_type)
                                     @case('credit_card')
-                                        <span class="px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">💳 Cartão de Crédito</span>
+                                        <span class="px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full flex items-center">
+                                            <i class="fas fa-credit-card mr-1"></i> Cartão de Crédito
+                                        </span>
                                         @break
                                     @case('loan')
-                                        <span class="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full">💰 Empréstimo</span>
+                                        <span class="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full flex items-center">
+                                            <i class="fas fa-hand-holding-usd mr-1"></i> Empréstimo
+                                        </span>
                                         @break
                                     @case('financing')
-                                        <span class="px-3 py-1 bg-cyan-100 text-cyan-700 text-xs rounded-full">🏠 Financiamento</span>
+                                        <span class="px-3 py-1 bg-cyan-100 text-cyan-700 text-xs rounded-full flex items-center">
+                                            <i class="fas fa-home mr-1"></i> Financiamento
+                                        </span>
                                         @break
                                     @case('invoice')
-                                        <span class="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">🧾 Fatura</span>
+                                        <span class="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full flex items-center">
+                                            <i class="fas fa-file-invoice mr-1"></i> Fatura
+                                        </span>
                                         @break
                                     @default
-                                        <span class="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">📜 Outro</span>
+                                        <span class="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full flex items-center">
+                                            <i class="fas fa-question-circle mr-1"></i> Outro
+                                        </span>
                                 @endswitch
                                 
                                 @if($debt->is_overdue)
-                                    <span class="px-2 py-1 bg-red-500 text-white text-xs rounded-full animate-pulse">⚠️ Vencida</span>
+                                    <span class="px-2 py-1 bg-red-500 text-white text-xs rounded-full animate-pulse flex items-center">
+                                        <i class="fas fa-exclamation-triangle mr-1"></i> Vencida
+                                    </span>
                                 @endif
                             </div>
                         </div>
